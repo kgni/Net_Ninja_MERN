@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { urlencoded } = require('express');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT;
@@ -6,13 +7,16 @@ const workoutRoutes = require('./routes/workouts');
 
 // MIDDLEWARE
 
+app.use(urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use((req, res, next) => {
 	console.log(req.path, req.method);
 	next();
 });
 
 // ROUTES
-app.use('/api/workouts/', workoutRoutes);
+app.use('/api/workouts', workoutRoutes);
 
 // Listen for requests
 
