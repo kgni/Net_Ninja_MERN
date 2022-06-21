@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { urlencoded } = require('express');
 const express = require('express');
+const { urlencoded } = express;
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT;
