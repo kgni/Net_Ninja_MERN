@@ -44,10 +44,40 @@ async function createWorkout(req, res) {
 
 // delete a workout
 
+async function deleteWorkout(req, res) {
+	const { id } = req.params;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'No workout found.' });
+	}
+
+	const workout = await Workout.findByIdAndDelete(id);
+	if (!workout) {
+		return res.status(404).json({ error: 'No workout found.' });
+	}
+	res.status(200).json(workout);
+}
+
+async function updateWorkout(req, res) {
+	const { id } = req.params;
+	// const { title, load, reps } = req.body;
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'No workout found.' });
+	}
+
+	const workout = await Workout.findByIdAndUpdate(id, { ...req.body });
+	if (!workout) {
+		return res.status(404).json({ error: 'No workout found.' });
+	}
+	res.status(200).json(workout);
+}
+
 // update a workout
 
 module.exports = {
 	getWorkout,
 	getWorkouts,
 	createWorkout,
+	deleteWorkout,
+	updateWorkout,
 };
