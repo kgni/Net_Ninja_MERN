@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 
-const WorkoutForm = ({ setWorkouts }) => {
+const WorkoutForm = () => {
+	const { dispatch } = useWorkoutsContext();
 	const [title, setTitle] = useState('');
 	const [load, setLoad] = useState('');
 	const [reps, setReps] = useState('');
@@ -30,9 +32,14 @@ const WorkoutForm = ({ setWorkouts }) => {
 		if (response.ok) {
 			setError(null);
 			console.log('New workout added', json);
-			setWorkouts((prevWorkouts) => {
-				return [json, ...prevWorkouts];
-			});
+
+			// done with context:
+			dispatch({ type: 'CREATE_WORKOUT', payload: json });
+
+			// We are going to be using React context for updating our local state with our database, instead of just passing down state from our home component like this:
+			// setWorkouts((prevWorkouts) => {
+			// 	return [json, ...prevWorkouts];
+			// });
 			setTitle('');
 			setLoad('');
 			setReps('');
